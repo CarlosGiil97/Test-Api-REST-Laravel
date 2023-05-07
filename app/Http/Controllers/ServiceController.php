@@ -97,4 +97,12 @@ class ServiceController extends Controller
         ];
         return response()->json($data);
     }
+
+    public function client(Request $request)
+    {
+        $service = Service::find($request->service_id);
+        $clients = $service->client;
+
+        return response()->json($clients);
+    }
 }
