@@ -35,3 +35,8 @@ Route::post('/services', 'App\Http\Controllers\ServiceController@store');
 Route::put('/services/{service}', 'App\Http\Controllers\ServiceController@update');
 Route::delete('/services/{service}', 'App\Http\Controllers\ServiceController@destroy');
 Route::post('/services/clients', 'App\Http\Controllers\ServiceController@client');
+
+
+//usuarios
+Route::post('/users/register', 'App\Http\Controllers\UserController@store'); //endpoint para el registro de usuarios
+Route::get('/users/login', 'App\Http\Controllers\UserController@login'); //endpoint para el login de usuarios

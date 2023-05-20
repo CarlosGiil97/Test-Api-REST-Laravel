@@ -11,7 +11,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        //para que funcione en 000webhost
+        $this->app->bind('path.public', function () {
+            return base_path('public_html');
+        });
     }
 
     /**

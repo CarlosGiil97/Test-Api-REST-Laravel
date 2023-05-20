@@ -143,6 +143,8 @@ return [
         'driver' => 'file',
         // 'store'  => 'redis',
     ],
+    'key' => env('APP_KEY', base64_decode('5ezOaLWzpVyQ83eAIkFWHu/rgS1VafZw7cJJF9v0nuM=')),
+
 
     /*
     |--------------------------------------------------------------------------
