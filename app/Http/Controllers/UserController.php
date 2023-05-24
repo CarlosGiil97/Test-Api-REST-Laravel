@@ -33,10 +33,13 @@ class UserController extends Controller
 
             if ($userExists) {
 
-                //en vez de devolver el cliente en sí, creo un nuevo array con un status de ok y el contenido del cliente creado
+                //al existir el usuario tengo que mandar un codigo de error
                 $data = [
-                    'status' => 'Este mail ya está registrado'
+                    'status' => 'El mail ' . $request->email . ' ya está registrado',
+                    'code' => 'ko',
                 ];
+
+                return response()->json($data);
             } else {
                 $user->save();
                 //en vez de devolver el cliente en sí, creo un nuevo array con un status de ok y el contenido del cliente creado
@@ -44,9 +47,9 @@ class UserController extends Controller
                     'status' => 'Usuario creado con éxito',
                     'data' => $user
                 ];
-            }
 
-            return response()->json($data);
+                return response()->json($data);
+            }
         } catch (\Exception $e) {
             // Capturar la excepción y devolver una respuesta de error
             $errorData = [
