@@ -22,6 +22,7 @@ return new class extends Migration
             $table->text('password');
             $table->rememberToken()->nullable();
             $table->string('avatar')->nullable();
+            $table->integer('active')->default(1);
             $table->timestamps();
         });
     }

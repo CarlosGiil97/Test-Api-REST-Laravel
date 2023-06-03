@@ -40,3 +40,6 @@ Route::post('/services/clients', 'App\Http\Controllers\ServiceController@client'
 //usuarios
 Route::post('/users/register', 'App\Http\Controllers\UserController@store'); //endpoint para el registro de usuarios
 Route::get('/users/login', 'App\Http\Controllers\UserController@login'); //endpoint para el login de usuarios
+Route::get('/users/{user}', 'App\Http\Controllers\UserController@show'); //endpoint para obtener toda la info de un usuario
+Route::put('/users/{user}', 'App\Http\Controllers\UserController@update'); //endpoint para actualizar toda la info de un usuario
+Route::post('/users/uploadImg', 'App\Http\Controllers\UserController@upload');//endpoint para actualizar toda la info de un usuario

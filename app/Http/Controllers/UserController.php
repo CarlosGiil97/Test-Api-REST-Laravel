@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+
 
 class UserController extends Controller
 {
@@ -77,10 +79,16 @@ class UserController extends Controller
 
                 // Autenticar al usuario
                 Auth::login($user);
+                $user->remember_token = Str::random(60);
+
+                $user->save();
                 // Respuesta de éxito
                 $data = [
                     'status' => 'Autenticación con exito',
                     'code' => 'ok',
+                    'token' => $user->remember_token,
+                    'token_type' => 'Bearer',
+                    'id' => $user->id,
                     'user' => $user
                 ];
                 return response()->json($data);
@@ -90,12 +98,13 @@ class UserController extends Controller
                     'code' => 'ko',
                     'message' => 'Las credenciales proporcionadas son inválidas.'
                 ];
-                return response()->json($data, 401);
+                return response()->json($data);
             }
         } catch (\Exception $e) {
             // Capturar la excepción y devolver una respuesta de error
             $errorData = [
                 'status' => 'Error al intentar iniciar sesión',
+                'code' => 'ko',
                 'message' => $e->getMessage()
             ];
             return response()->json($errorData, 500);
@@ -106,9 +115,41 @@ class UserController extends Controller
     /**
      * Display the specified user.
      */
-    public function show(User $idUser)
+    public function show(User $user)
     {
         //
-        return response()->json($idUser);
+        $data = [
+            'msg' => 'Usuario obtenido con éxito',
+            'code' => 'ok',
+            'user' => $user,
+        ];
+        return response()->json($data);
+    }
+
+    public function update(Request $request, User $user)
+    {
+        //
+        $user->name = $request->name;
+        $user->surname = $request->surname;
+        $user->username = $request->username;
+        $user->phone = $request->phone;
+        $user->email = $request->email;
+        $user->address = $request->address;
+        $user->updated_at = $request->updated_at;
+        $user->save();
+
+        $data = [
+            'status' => 'Usuario actualizado  con éxito',
+            'code' => 'ok',
+            'data' => $user
+        ];
+        return response()->json($data);
+    }
+
+    public function upload(Request $request)
+    {
+
+        var_dump($request, 'yiee');
+        return response()->json(['eee']);
     }
 }
