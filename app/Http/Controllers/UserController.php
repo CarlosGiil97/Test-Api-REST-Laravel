@@ -16,6 +16,8 @@ class UserController extends Controller
     /**
      * Store a newly users resource in storage.
      */
+
+
     public function store(Request $request)
     {
         //
@@ -27,7 +29,7 @@ class UserController extends Controller
             $user->email = $request->email;
             $user->phone = $request->phone;
             $user->password = Hash::make($request->password);
-            $user->remember_token = $request->remember_token;
+
 
             $userExists = DB::table('users')
                 ->where('email', $user->email)
@@ -44,10 +46,15 @@ class UserController extends Controller
                 return response()->json($data);
             } else {
                 $user->save();
+                // Generar un token de autenticación para el usuario
+                $token = $user->createToken('auth_token')->plainTextToken;
                 //en vez de devolver el cliente en sí, creo un nuevo array con un status de ok y el contenido del cliente creado
                 $data = [
                     'status' => 'Usuario creado con éxito',
-                    'data' => $user
+                    'code' => 'ok',
+                    'data' => $user,
+                    'access_token' => $token,
+                    'type_token' => 'Bearer'
                 ];
 
                 return response()->json($data);
@@ -70,6 +77,8 @@ class UserController extends Controller
     {
         try {
 
+
+
             $email =  $request->email;
             $password = $request->password;
 
@@ -79,15 +88,14 @@ class UserController extends Controller
 
                 // Autenticar al usuario
                 Auth::login($user);
-                $user->remember_token = Str::random(60);
+                $user->api_token = Str::random(60);
 
                 $user->save();
                 // Respuesta de éxito
                 $data = [
                     'status' => 'Autenticación con exito',
                     'code' => 'ok',
-                    'token' => $user->remember_token,
-                    'token_type' => 'Bearer',
+                    'api_token' => $user->api_token,
                     'id' => $user->id,
                     'user' => $user
                 ];
@@ -151,5 +159,10 @@ class UserController extends Controller
 
         var_dump($request, 'yiee');
         return response()->json(['eee']);
+    }
+
+    public function test(Request $request)
+    {
+        var_dump('hola');
     }
 }

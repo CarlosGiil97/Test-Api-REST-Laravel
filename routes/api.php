@@ -14,9 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
 
 //clientes
@@ -42,4 +39,11 @@ Route::post('/users/register', 'App\Http\Controllers\UserController@store'); //e
 Route::get('/users/login', 'App\Http\Controllers\UserController@login'); //endpoint para el login de usuarios
 Route::get('/users/{user}', 'App\Http\Controllers\UserController@show'); //endpoint para obtener toda la info de un usuario
 Route::put('/users/{user}', 'App\Http\Controllers\UserController@update'); //endpoint para actualizar toda la info de un usuario
-Route::post('/users/uploadImg', 'App\Http\Controllers\UserController@upload');//endpoint para actualizar toda la info de un usuario
+Route::post('/users/uploadImg', 'App\Http\Controllers\UserController@upload'); //endpoint para actualizar toda la info de un usuario
+Route::get('/users/test', 'App\Http\Controllers\UserController@test');
+
+Route::post('/auth/register', 'App\Http\Controllers\AuthController@createUser');
+//Route::post('/auth/login', [AuthController::class, 'loginUser']);
+
+
+//SUBIR IMAGEN
