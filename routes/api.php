@@ -45,5 +45,13 @@ Route::get('/users/test', 'App\Http\Controllers\UserController@test');
 Route::post('/auth/register', 'App\Http\Controllers\AuthController@createUser');
 //Route::post('/auth/login', [AuthController::class, 'loginUser']);
 
+//categorias
+Route::get('/categories', 'App\Http\Controllers\Categoriescontroller@index');
+
+//POSTS
+Route::post('/posts/new', 'App\Http\Controllers\PostsController@store');
+Route::get('/posts', 'App\Http\Controllers\PostsController@index');
+
+
 
 //SUBIR IMAGEN
