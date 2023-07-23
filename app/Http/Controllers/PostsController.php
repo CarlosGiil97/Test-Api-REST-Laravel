@@ -77,6 +77,7 @@ class PostsController extends Controller
         $replies = $post->replyes;
 
         if (!empty($replies)) {
+            $response['numReplies'] = count($replies);
             foreach ($replies as $key => $reply) {
                 $response['replyes'][$key] = $reply;
                 $response['replyes'][$key]['user'] = $reply->user;
