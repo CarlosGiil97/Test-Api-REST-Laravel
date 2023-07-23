@@ -11,8 +11,19 @@ class Posts extends Model
     public $timestamps = false;
 
 
-    public function Categories()
+    public function categories()
     {
-        return $this->belongsToMany(Posts::class, 'categories', 'id');
+        return $this->hasOne(Categories::class, 'id', 'id_cat');
+    }
+
+    public function infoUser()
+    {
+        return $this->belongsTo(User::class, 'id_user')->select('id', 'username', 'name', 'email');
+    }
+
+    public function replyes()
+    {
+
+        return $this->hasMany(ReplyPosts::class, 'id_post', 'id');
     }
 }

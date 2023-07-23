@@ -47,11 +47,12 @@ Route::post('/auth/register', 'App\Http\Controllers\AuthController@createUser');
 
 //categorias
 Route::get('/categories', 'App\Http\Controllers\Categoriescontroller@index');
+Route::get('/categories/{categories}', 'App\Http\Controllers\Categoriescontroller@show');
 
 //POSTS
 Route::post('/posts/new', 'App\Http\Controllers\PostsController@store');
 Route::get('/posts', 'App\Http\Controllers\PostsController@index');
-
-
+Route::get('/posts/{post}', 'App\Http\Controllers\PostsController@show');
+Route::put('/posts/{post}', 'App\Http\Controllers\PostsController@update');
 
 //SUBIR IMAGEN

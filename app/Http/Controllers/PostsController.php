@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Posts;
+use App\Models\ReplyPosts;
 
 
 class PostsController extends Controller
@@ -13,12 +14,20 @@ class PostsController extends Controller
     {
         //
         $posts = Posts::all();
-        if (!empty($posts)) {
-            foreach ($posts as $post) {
-                $array[$post->id] = $post;
-                $array[$post->id]['categories'] = $post->categories ?? [];
-            }
-        }
+        $posts = Posts::select('*')
+            ->with('categories')
+            ->with('infoUser')
+            ->get();
+
+        // if (!empty($posts)) {
+        //     foreach ($posts as $post) {
+        //         $array[$post->id] = $post;
+        //         $category = $post->categories;
+        //         $array[$post->id]['categories'] = $category;
+        //         $infoUser = $post->infoUser;
+        //         $array[$post->id]['infoUser'] = ['name' => $infoUser->name, 'username' => $infoUser->username];
+        //     }
+        // }
         return response()->json($posts);
     }
     //
@@ -55,5 +64,42 @@ class PostsController extends Controller
             ];
             return response()->json($errorData, 500);
         }
+    }
+
+    public function show(Posts $post)
+    {
+        //
+        $response = $post;
+
+
+        $response['infoUser'] = $post->infoUser;
+
+        $replies = $post->replyes;
+
+        if (!empty($replies)) {
+            foreach ($replies as $key => $reply) {
+                $response['replyes'][$key] = $reply;
+                $response['replyes'][$key]['user'] = $reply->user;
+            }
+        }
+        return response()->json($response);
+    }
+
+    public function update(Request $request, Posts $post)
+    {
+
+        $post->id_user = $request->userId;
+        $post->title = $request->title;
+        $post->body = $request->description;
+        $post->id_cat = $request->category;
+        $post->date_modified = date('Y-m-d H:i:s');
+        $post->is_edited =  1;
+        $post->save();
+
+        $data = [
+            'status' => 'Post actualizado  con éxito',
+            'code' => 'ok',
+        ];
+        return response()->json($data);
     }
 }
