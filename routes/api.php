@@ -51,8 +51,13 @@ Route::get('/categories/{categories}', 'App\Http\Controllers\Categoriescontrolle
 
 //POSTS
 Route::post('/posts/new', 'App\Http\Controllers\PostsController@store');
+Route::post('/posts/newReply', 'App\Http\Controllers\PostsController@storeReply');
 Route::get('/posts', 'App\Http\Controllers\PostsController@index');
 Route::get('/posts/{post}', 'App\Http\Controllers\PostsController@show');
 Route::put('/posts/{post}', 'App\Http\Controllers\PostsController@update');
+Route::put('/posts/updateLikes/{post}', 'App\Http\Controllers\PostsController@updateLikes');
 
 //SUBIR IMAGEN
+//POST_REPLIES  
+Route::get('/replyes/{reply}', 'App\Http\Controllers\RepliesController@show');
+Route::put('/replyes/{reply}', 'App\Http\Controllers\RepliesController@update');

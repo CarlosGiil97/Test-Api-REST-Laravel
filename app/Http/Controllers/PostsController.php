@@ -103,4 +103,53 @@ class PostsController extends Controller
         ];
         return response()->json($data);
     }
+
+
+    //funcion encargada de insertar una nueva respuesta
+    public function storeReply(Request $request)
+    {
+        //
+        try {
+            $reply = new ReplyPosts();
+            $reply->title = $request->title;
+            $reply->body = $request->reply;
+            $reply->id_user = $request->userId;
+            $reply->date_created = date('Y-m-d H:i:s');
+            $reply->date_modified = date('Y-m-d H:i:s');
+            $reply->id_post = $request->postId;
+
+            $reply->save();
+            //en vez de devolver el cliente en sí, creo un nuevo array con un status de ok y el contenido del cliente creado
+            $data = [
+                'status' => 'Respuesta añadida con éxito',
+                'code' => 'ok',
+                'data' => $reply,
+            ];
+
+            return response()->json($data);
+        } catch (\Exception $e) {
+            // Capturar la excepción y devolver una respuesta de error
+            $errorData = [
+                'status' => 'Error al crear la respuesta',
+                'message' => $e->getMessage()
+            ];
+            return response()->json($errorData, 500);
+        }
+    }
+
+
+    public function updateLikes(Request $request, Posts $post)
+    {
+
+        $actualLikes = !empty($post['num_likes']) ? $post['num_likes'] : 0;
+        $post->num_likes = $actualLikes + 1;
+        $post->save();
+
+        $data = [
+            'status' => 'Like añadido con éxito',
+            'num_likes' => $post->num_likes,
+            'code' => 'ok',
+        ];
+        return response()->json($data);
+    }
 }
